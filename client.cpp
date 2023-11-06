@@ -20,42 +20,18 @@
 #define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 #include <cryptopp/md5.h>
 
-// Defined by makefile. Uncomment if compile without makefile or with own custom makefile
-//#define CODE 32
-
 #ifndef CODE
 #error CODE not defined. Define CODE in makefile or uncomment in code
 #endif
 
-#if CODE==64
-typedef uint64_t T;
-#elif CODE==32
-typedef uint32_t T;
-#elif CODE==16
-typedef uint16_t T;
-#elif CODE==-64
-typedef int64_t T;
-#elif CODE==-32
-typedef int32_t T;
-#elif CODE==-16
+#if CODE==-16
 typedef int16_t T;
-#elif CODE==-4
-typedef float T;
-#elif CODE==-8
-typedef double T;
 #else
 #error Type T not supported
 #endif
 
 const std::map<char, std::string_view> dict{
-    {'f', "float"},
-    {'d', "double"},
-    {'s', "int16_t"},
-    {'t', "uint16_t"},
-    {'i', "int32_t"},
-    {'j', "uint32_t"},
-    {'l', "int64_t"},
-    {'m', "uint64_t"},
+    {'s', "int16_t"}
 };
 
 using namespace CryptoPP;
@@ -66,12 +42,9 @@ int main()
     T res;
     T v[nvect][vlen] = {
         {1, 2, 3, 4},
-#if CODE == 16 or CODE == -16
+#if CODE == -16
         {800, 1000, 1200, 1200},
         {800, 1000, 1200, 1300},
-#elif CODE == 32 or CODE == -32
-        {8000, 10000, 12000, 12000},
-        {8000, 10000, 12000, 13000},
 #else
         {80000, 100000, 120000, 120000},
         {80000, 100000, 120000, 130000},
