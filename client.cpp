@@ -30,7 +30,7 @@ typedef int16_t T;
 #error Type T not supported
 #endif
 
-const std::map<char, std::string_view> dict{
+const std::map <char, std::string_view> dict{
     {'s', "int16_t"}
 };
 
@@ -47,7 +47,7 @@ int main()
 {
 
  // Проверка на наличие опции --help или -h
-    if (argc > 1 && (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)) {
+    if (nvect > 1 && (strcmp(vlen[1], "--help") == 0 || strcmp(vlen[1], "-h") == 0)) {
         printHelp();
         return 0;
     }
