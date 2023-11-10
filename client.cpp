@@ -147,7 +147,7 @@ int main()
     close(s);
 }
 
-int main(int argc, char* argv[]) {
+int Main(int argc, char* argv[]) {
     if (argc <= 1) {
         std::cout << "Чтобы узнать как задать обязательные параметры воспользуйтесь: -h или --help \n";
         return 0;
