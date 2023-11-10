@@ -146,35 +146,3 @@ int main()
     }
     close(s);
 }
-
-int Main(int argc, char* argv[]) {
-    if (argc <= 1) {
-        std::cout << "Чтобы узнать как задать обязательные параметры воспользуйтесь: -h или --help \n";
-        return 0;
-    }
-    
-    std::vector<double> operands;
-    std::string operation;
-    
-    for (int i = 1; i < argc - 2; i++) {
-        double operand;
-        try {
-            operand = std::stod(argv[i]);
-        } catch (const std::exception& e) {
-            std::cout << "Error: Invalid operand format\n";
-            return 1;
-        }
-        operands.push_back(operand);
-    }
-    
-    operation = argv[argc - 2];
-    
-    if (operation == "-h" || operation == "--help") {
-        operation = argv[argc - 1];
-    } else {
-        std::cout << "Чтобы задать обязательные параметры воспользуйтесь: \n";
-        std::cout << "1) -a, чтобы задать сетевой адрес сервера \n";
-        std::cout << "2) -i, чтобы задать имя файла с исходными данными \n";
-        std::cout << "3) -s, чтобы задать имя файла для сохранения результатов \n";
-        return 1;
-    }
