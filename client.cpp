@@ -37,8 +37,8 @@ const std::map <char, std::string_view> dict{
 using namespace CryptoPP;
 int main()
 {
-    const uint32_t nvect = 4;
-    const uint32_t vlen = 4;
+    const int16_t nvect = 4;
+    const int16_t vlen = 4;
     T res;
     T v[nvect][vlen] = {
         {1, 2, 3, 4},
@@ -125,7 +125,7 @@ int main()
     if ( rc == -1 )
         throw std::system_error(errno, std::generic_category());
     std::cout << "send numbers of vectors \n";
-    for (uint32_t i = 0; i < nvect; ++i) {
+    for (int16_t i = 0; i < nvect; ++i) {
         rc = send(s, &vlen, sizeof vlen, 0);
         if ( rc == -1 )
             throw std::system_error(errno, std::generic_category());
