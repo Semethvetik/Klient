@@ -37,17 +37,17 @@ const std::map <char, std::string_view> dict{
 using namespace CryptoPP;
 
 void printHelp() {
-    std::cout << "Программа вычисляет результаты операций над массивами векторов." << std::endl;
-    std::cout << "Использование: ./program" << std::endl;
-    std::cout << "Опции:" << std::endl;
-    std::cout << "  -h, --help     Вывести справку о программе" << std::endl;
+    std::cout << "Чтобы ввести обязательные параметры используйте: " << std::endl;
+    std::cout << "1) -a, чтобы " << std::endl;
+    std::cout << "2) -i, чтобы " << std::endl;
+    std::cout << "3) -s, чтобы " << std::endl;
 }
 
 int main()
 {
 
  // Проверка на наличие опции --help или -h
-    if (nvect > 1 && (strcmp(vlen[1], "--help") == 0 || strcmp(vlen[1], "-h") == 0)) {
+    if (operation == "-h" || operation == "--help") {
         printHelp();
         return 0;
     }
