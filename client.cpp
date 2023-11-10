@@ -35,23 +35,8 @@ const std::map <char, std::string_view> dict{
 };
 
 using namespace CryptoPP;
-
-void printHelp() {
-    std::cout << "Чтобы ввести обязательные параметры используйте: " << std::endl;
-    std::cout << "1) -a, чтобы " << std::endl;
-    std::cout << "2) -i, чтобы " << std::endl;
-    std::cout << "3) -s, чтобы " << std::endl;
-}
-
 int main()
 {
-
- // Проверка на наличие опции --help или -h
-    if (operation == "-h" || operation == "--help") {
-        printHelp();
-        return 0;
-    }
-    
     const uint32_t nvect = 4;
     const uint32_t vlen = 4;
     T res;
