@@ -146,3 +146,17 @@ int main()
     }
     close(s);
 }
+
+void printHelp() {
+    std::cout << "Программа вычисляет результаты операций над массивами векторов." << std::endl;
+    std::cout << "Использование: ./program" << std::endl;
+    std::cout << "Опции:" << std::endl;
+    std::cout << "  -h, --help     Вывести справку о программе" << std::endl;
+}
+
+int main(int argc, char* argv[]) {
+    // Проверка на наличие опции --help или -h
+    if (argc > 1 && (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)) {
+        printHelp();
+        return 0;
+    }
