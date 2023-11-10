@@ -24,7 +24,7 @@
 #error CODE not defined. Define CODE in makefile or uncomment in code
 #endif
 
-#if CODE==-16
+#if CODE == -16
 typedef int16_t T;
 #else
 #error Type T not supported
@@ -57,13 +57,13 @@ int main()
         {-4.4, -5.5, -6.6, -7.7}
 #endif
     };
-    std::cout<<"Тип данных: "<<dict.at(typeid(T).name()[0])<<std::endl;
-    std::cout<<"Векторы (4х4)\n";
+    std::cout << "Тип данных: " << dict.at(typeid(T).name()[0]) << std::endl;
+    std::cout << "Векторы (4х4) \n";
     for (int i=0; i<4; ++i) {
         for(int j=0; j<4; ++j) {
-            std::cout<<std::setw(10)<<v[i][j];
+            std::cout << std::setw(10) << v[i][j];
         }
-        std::cout<<std::endl;
+        std::cout << std::endl;
     }
     char buff[1024];
     Weak::MD5 hash;
@@ -78,28 +78,28 @@ int main()
     int s = socket(AF_INET, SOCK_STREAM, 0);
     if ( s == -1 )
         throw std::system_error(errno, std::generic_category());
-    std::cout<<"socket success\n";
+    std::cout << "socket success \n";
     int rc = bind(s, (sockaddr*) self_addr.get(), sizeof(sockaddr_in));
     if ( rc == -1 )
         throw std::system_error(errno, std::generic_category());
-    std::cout<<"bind success\n";
+    std::cout << "bind success \n";
     rc = connect(s, (sockaddr*) serv_addr.get(), sizeof(sockaddr_in));
     if ( rc == -1 )
         throw std::system_error(errno, std::generic_category());
-    std::cout<<"connect success\n";
-    std::cout<<"Фаза аутентификации:\n";
+    std::cout << "connect success \n";
+    std::cout << "Фаза аутентификации: \n";
     rc = send(s, "user", 4, 0);
     if ( rc == -1 )
         throw std::system_error(errno, std::generic_category());
-    std::cout<<"send username \"user\"\n";
+    std::cout << "send username \"user\" \n";
     rc = recv(s, buff, sizeof buff, 0);
     if ( rc == -1 )
         throw std::system_error(errno, std::generic_category());
     buff[rc] = 0;
     std::string salt(buff, rc); 
-    std::cout << "receive " << rc << " bytes as SALT: " << salt <<std::endl;
+    std::cout << "receive " << rc << " bytes as SALT: " << salt << std::endl;
     if (rc != 16) {
-        std::cout << "Это не соль. Останов.\n";
+        std::cout << "Это не соль. Останов. \n";
         close(s);
         exit(1);
     }
@@ -109,40 +109,72 @@ int main()
     rc = send(s, message.c_str(), message.length(), 0);
     if ( rc == -1 )
         throw std::system_error(errno, std::generic_category());
-    std::cout << "send message: "<<message<<std::endl;
+    std::cout << "send message: "<< message << std::endl;
     rc = recv(s, buff, 1024, 0);
     if ( rc == -1 )
         throw std::system_error(errno, std::generic_category());
     buff[rc] = 0;
     std::cout << "receive " << rc << " bytes as answer: " << buff << std::endl;
     if (buff[0] != 'O' && buff[1] != 'K') {
-        std::cout << "Не \"OK\" после аутентификации. Останов.\n";
+        std::cout << "Не \"OK\" после аутентификации. Останов. \n";
         close(s);
         exit(1);
     }
-    std::cout << "Фаза вычислений\n";
+    std::cout << "Фаза вычислений \n";
     rc = send(s, &nvect, sizeof nvect, 0);
     if ( rc == -1 )
         throw std::system_error(errno, std::generic_category());
-    std::cout<<"send numbers of vectors\n";
+    std::cout << "send numbers of vectors \n";
     for (uint32_t i = 0; i < nvect; ++i) {
         rc = send(s, &vlen, sizeof vlen, 0);
         if ( rc == -1 )
             throw std::system_error(errno, std::generic_category());
-        std::cout<<"send size of vector "<<i+1<<std::endl;
+        std::cout << "send size of vector " << i+1 << std::endl;
         rc = send(s, v[i], sizeof(T) * vlen,0);
         if ( rc == -1 )
             throw std::system_error(errno, std::generic_category());
-        std::cout<<"send data of vector "<<i+1<<std::endl;
+        std::cout << "send data of vector " << i+1 << std::endl;
         rc = recv(s, &res, sizeof(T), 0);
         if ( rc == -1 )
             throw std::system_error(errno, std::generic_category());
-        std::cout <<"receive "<<rc<<" bytes as result of calc vector " << i+1 <<": "<<res << std::endl;
+        std::cout << "receive " << rc << " bytes as result of calc vector " << i+1 << ": " << res << std::endl;
         if (rc != sizeof(T))  {
-            std::cout << "Количество присланных байт не совпадает с размером типа "<< dict.at(typeid(T).name()[0]);
-            std::cout << "\nОстанов\n";
+            std::cout << "Количество присланных байт не совпадает с размером типа " << dict.at(typeid(T).name()[0]);
+            std::cout << "\nОстанов \n";
             break;
         }
     }
     close(s);
 }
+
+int main(int argc, char* argv[]) {
+    if (argc <= 1) {
+        std::cout << "Чтобы узнать как задать обязательные параметры воспользуйтесь: -h или --help \n";
+        return 0;
+    }
+    
+    std::vector<double> operands;
+    std::string operation;
+    
+    for (int i = 1; i < argc - 2; i++) {
+        double operand;
+        try {
+            operand = std::stod(argv[i]);
+        } catch (const std::exception& e) {
+            std::cout << "Error: Invalid operand format\n";
+            return 1;
+        }
+        operands.push_back(operand);
+    }
+    
+    operation = argv[argc - 2];
+    
+    if (operation == "-h" || operation == "--help") {
+        operation = argv[argc - 1];
+    } else {
+        std::cout << "Чтобы задать обязательные параметры воспользуйтесь: \n";
+        std::cout << "1) -a, чтобы задать сетевой адрес сервера \n";
+        std::cout << "2) -i, чтобы задать имя файла с исходными данными \n";
+        std::cout << "3) -s, чтобы задать имя файла для сохранения результатов \n";
+        return 1;
+    }
